@@ -5,15 +5,15 @@ spring:
       client:
         registration:
           google:
-            clientId: 5014057553-8gm9um6vnli3cle5rgigcdjpdrid14m9.apps.googleusercontent.com
-            clientSecret: tWZKVLxaD_ARWsriiiUFYoIk
+            clientId: ENTER CLIENT ID
+            clientSecret: ENTER CLIENT SECRET
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
           facebook:
-            clientId: 216653007706032
-            clientSecret: 9b9df06099134186d14d664153dc82d8
+            clientId: ENTER FACEBOOK CLIENT ID
+            clientSecret: ENTER CLIENT SECRET 
             redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
             scope:
               - email
