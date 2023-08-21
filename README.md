@@ -186,43 +186,74 @@ This README provides an overview of the social login flow implemented using OAut
 
 ## Social Login Flow
 
-1. **User Initiates Login:**
+### 1. **User Initiates Login:**
    - User clicks on a "Login with Google" button on the frontend.
    - Backend server handles the request and initiates the OAuth2 flow.
 
-2. **OAuth2 Authorization Request:**
+### 2. **OAuth2 Authorization Request:**
    - Backend server redirects the user to the OAuth2 authorization endpoint (Google/Facebook).
    - User is prompted to log in or grant permission.
 
-3. **Redirect to Your Application:**
+### 3. **Redirect to Your Application:**
    - After permission is granted, the user is redirected back to your application with an authorization code.
 
-4. **CustomOAuth2UserService:**
+### 4. **CustomOAuth2UserService:**
    - The custom user service processes the authorization code.
    - It exchanges the code for an access token from the OAuth2 provider's token endpoint.
+   #### CustomOAuth2UserService Explanation
 
-5. **OAuth2UserInfo and UserInfo Classes:**
+     Here's what the key parts of the `CustomOAuth2UserService` do:
+
+##### `loadUser` Method:
+
+- Overrides the `loadUser` method of `DefaultOAuth2UserService` to customize the loading of user information.
+- Calls the `processOAuth2User` method to handle the processing of OAuth2 user information.
+
+##### `processOAuth2User` Method:
+
+- Receives the OAuth2 user information and the OAuth2 provider's request details.
+- Checks if the user already exists in the database.
+- If the user exists, updates their information. If not, registers a new user.
+- Returns a `UserPrincipal` object containing the user's information and OAuth2 attributes.
+
+##### `registerNewUser` Method:
+
+- Creates a new `User` entity based on the OAuth2 user information.
+- Sets the user's information, provider, provider ID, and active status.
+- Saves the new user in the database using the `userRepository`.
+
+##### `updateExistingUser` Method:
+
+- Updates the existing user's provider information based on the OAuth2 provider's response.
+- Sets the provider and provider ID, and optionally updates the first name.
+- Saves the updated user information in the database using the `userRepository`.
+
+In summary, the `CustomOAuth2UserService` is responsible for processing OAuth2 user information, checking if the user exists in the database, registering new users, updating existing users' provider information, and returning a `UserPrincipal` object containing user details and OAuth2 attributes. This service plays a crucial role in the authentication and user management process during OAuth2-based social login.
+
+
+
+### 5. **OAuth2UserInfo and UserInfo Classes:**
    - User information is parsed using appropriate `OAuth2UserInfo` classes (e.g., `GoogleOAuth2UserInfo`).
    - User details like ID, name, email, etc., are retrieved from the OAuth2 provider's API.
 
-6. **Process OAuth2 User Details:**
+### 6. **Process OAuth2 User Details:**
    - Custom user service processes the user details obtained from the `OAuth2UserInfo` class.
    - Checks if the user with the provided email exists in the database.
    - Updates existing user or creates a new user account.
 
-7. **Authentication Success:**
+### 7. **Authentication Success:**
    - OAuth2 authentication success handler determines the redirect URL.
 
-8. **JWT Token Generation:**
+### 8. **JWT Token Generation:**
    - The success handler generates a JWT token with user details and roles.
 
-9. **Redirect with Token and User Info:**
+### 9. **Redirect with Token and User Info:**
    - User is redirected to the specified URL with the generated JWT token and user information.
 
-10. **Frontend Processing:**
+### 10. **Frontend Processing:**
    - Frontend parses the JWT token to retrieve user information and roles.
 
-11. **Token Usage:**
+### 11. **Token Usage:**
    - JWT token is included in request headers for authentication and authorization in subsequent API requests.
 
 ## Usage
