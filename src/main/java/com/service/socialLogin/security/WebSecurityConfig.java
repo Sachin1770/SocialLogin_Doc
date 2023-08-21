@@ -47,12 +47,6 @@ public class WebSecurityConfig {
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/check/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers
-                                ("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
-                                        "/api-docs").
-                        permitAll().
-                        requestMatchers("/login/twitter", "/signin/**", "/connect/**","/connect/callback/twitter")
-                                .permitAll()
                         .anyRequest().fullyAuthenticated())
                 .oauth2Login(auth2 ->
                         auth2.authorizationEndpoint(authorization ->
